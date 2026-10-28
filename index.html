@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>Coffee Experience</title>
+    <style>
+      html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; background: #231F20; }
+      #unity-canvas { width: 100%; height: 100%; display: block; background: #231F20; }
+      #loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+                 width: 240px; font: 14px sans-serif; color: #ddd; text-align: center; }
+      #bar { height: 6px; margin-top: 10px; background: #444; border-radius: 3px; overflow: hidden; }
+      #bar-fill { height: 100%; width: 0; background: #e8b04a; transition: width 0.2s; }
+      #warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); font: 14px sans-serif; }
+    </style>
+  </head>
+  <body>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="loading">Loading Coffee Experience…<div id="bar"><div id="bar-fill"></div></div></div>
+    <div id="warning"></div>
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+      var loading = document.querySelector("#loading");
+      var barFill = document.querySelector("#bar-fill");
+
+      function showBanner(msg, type) {
+        var div = document.createElement("div");
+        div.textContent = msg;
+        div.style.padding = "10px";
+        div.style.background = type == "error" ? "red" : "yellow";
+        document.querySelector("#warning").appendChild(div);
+        if (type != "error") setTimeout(function () { div.remove(); }, 5000);
+      }
+
+      var buildUrl = "Build";
+      var config = {
+        dataUrl: buildUrl + "/WebGL.data.unityweb",
+        frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebGL.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Coffee Experience",
+        productVersion: "1.0",
+        showBanner: showBanner,
+      };
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement("meta");
+        meta.name = "viewport";
+        meta.content = "width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes";
+        document.head.appendChild(meta);
+        config.devicePixelRatio = 1; // VIVERSE: limits GPU memory on phones
+      }
+
+      var script = document.createElement("script");
+      script.src = buildUrl + "/WebGL.loader.js";
+      script.onload = function () {
+        createUnityInstance(canvas, config, function (progress) {
+          barFill.style.width = 100 * progress + "%";
+        }).then(function () {
+          loading.style.display = "none";
+        }).catch(function (message) {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
