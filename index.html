@@ -33,9 +33,9 @@
 
       var buildUrl = "Build";
       var config = {
-        dataUrl: buildUrl + "/WebGL.data.unityweb",
-        frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebGL.wasm.unityweb",
+        dataUrl: buildUrl + "/b4609fe417425369632dc60c005d05d3.data.unityweb",
+        frameworkUrl: buildUrl + "/0bae5c96e0764ac5bd511ae62a1ab323.framework.js.unityweb",
+        codeUrl: buildUrl + "/6acc9ebf6fda6144218ba56263e993c2.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Coffee Experience",
@@ -52,7 +52,7 @@
       }
 
       var script = document.createElement("script");
-      script.src = buildUrl + "/WebGL.loader.js";
+      script.src = buildUrl + "/6a9d9216e56a9882910bd818e0e9fb16.loader.js";
       script.onload = function () {
         createUnityInstance(canvas, config, function (progress) {
           barFill.style.width = 100 * progress + "%";
